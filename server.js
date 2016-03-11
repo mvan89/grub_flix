@@ -8,7 +8,7 @@ app.use(bodyParser.json());
 
 //require('./server/config/mongoose.js');
 //WE NEED TO REQUIRE MONGOOSE BEFORE THE ROUTES!
-//require('./server/config/routes.js')(app);
+require('./server/config/routes.js')(app);
 
 app.use(express.static(path.join(__dirname, './client')));
 app.use(express.static(path.join(__dirname, './client/static/css')));

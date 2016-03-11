@@ -42,8 +42,7 @@
 				
 				functions.getapi = function(callback){
 					console.log("test");
-					$http.get("http://food2fork.com/api/search?key=ebc794811e4a59fb16d79a31a6576cac").then(function(response){
-						console.log("test");
+					$http.get('/getapi').success(function(response){
 						console.log(response);
 					})
 				}
