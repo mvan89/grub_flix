@@ -1,7 +1,9 @@
 var express = require("express");
 var path= require('path');
+
 var app = express();
 var bodyParser = require("body-parser");
+
 app.use(bodyParser.json());
 
 //require('./server/config/mongoose.js');

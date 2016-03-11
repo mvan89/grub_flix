@@ -1,10 +1,13 @@
 <html ng-app="Myapp">
 	<head>
 		<title>Grub Flix</title>
+
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/js/materialize.min.js"></script>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/css/materialize.min.css">
+  		
 		<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.5/angular.min.js"></script>
   		<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.5/angular-route.min.js"></script>
-  		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/css/materialize.min.css">
-  		<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/js/materialize.min.js"></script>
+  		
   		<script>
   			var Myapp = angular.module('Myapp', ['ngRoute']);
 			Myapp.config(function($routeProvider, $locationProvider){
@@ -16,7 +19,37 @@
 				.otherwise({
 					redirectTo: '/'
 				});	
+				
 			})
+			Myapp.config(['$httpProvider', function($httpProvider) {
+        		$httpProvider.defaults.withCredentials = true;
+        		delete $httpProvider.defaults.headers.common['X-Requested-With'];
+   			 }
+			]);
+			Myapp.controller('maincontroller', function($scope, apifactory ){
+				$scope.list = [];
+
+
+				apifactory.getapi(function(data){$scope.list = data});
+
+
+
+			})
+
+
+			Myapp.factory('apifactory', function($http){
+				var functions = {};
+				
+				functions.getapi = function(callback){
+					console.log("test");
+					$http.get("http://food2fork.com/api/search?key=ebc794811e4a59fb16d79a31a6576cac").then(function(response){
+						console.log("test");
+						console.log(response);
+					})
+				}
+				return functions;
+			})
+		
 		</script>
 	</head>
 	<body>
