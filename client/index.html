@@ -1,0 +1,26 @@
+<html ng-app="Myapp">
+	<head>
+		<title>Grub Flix</title>
+		<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.5/angular.min.js"></script>
+  		<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.5/angular-route.min.js"></script>
+  		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/css/materialize.min.css">
+  		<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/js/materialize.min.js"></script>
+  		<script>
+  			var Myapp = angular.module('Myapp', ['ngRoute']);
+			Myapp.config(function($routeProvider, $locationProvider){
+				$routeProvider
+
+				.when('/' , {
+					templateUrl: 'static/partials/main.html'
+				})
+				.otherwise({
+					redirectTo: '/'
+				});	
+			})
+		</script>
+	</head>
+	<body>
+		<div ng-view="">
+		</div>
+	</body>
+</html>
