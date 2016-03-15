@@ -48,6 +48,7 @@
 				$scope.items = ['item1', 'item2', 'item3'];
 				$scope.animationsEnabled = true;
 				$scope.modal = [];
+				
 
 				apifactory.getapi(function(data){
 					$scope.list = data[0].recipes;
@@ -59,10 +60,12 @@
 				
 				
 				$scope.open = function (size, num) {
-
+					$scope.modal = [];
 				apifactory.callback(function(data){
-					// console.log($scope.list);
+					
 					console.log(num);
+					$scope.modal.push(num);
+
 
 
 				})
@@ -76,7 +79,10 @@
 				  resolve: {
 				    items: function () {
 				      return $scope.items;
-				      return $scope.list;
+				     
+				    },
+				    modal: function(){
+				    	return $scope.modal;
 				    }
 				  }
 				});
@@ -95,9 +101,10 @@
 
 			});
 
-			Myapp.controller('ModalInstanceCtrl', function ($scope, $uibModalInstance, items) {
-	
+			Myapp.controller('ModalInstanceCtrl', function ($scope, $uibModalInstance, items, modal) {
+			$scope.modal = modal;
 			$scope.items = items;
+
 			$scope.selected = {
 			item: $scope.items[0]
 			};

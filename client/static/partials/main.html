@@ -19,26 +19,32 @@
 	</body>
 
 	<div  ng-controller="modalcontrol">
-        <script type="text/ng-template" id="modal.html">
-                <div class="modal-header">
-                    <h3>Title</h3>
+        <div ng-repeat="y in list">
+            <p>{{x.title}}</p>
+            <script type="text/ng-template" id="modal.html">
+                <div ng-repeat="x in modal">
+                    <div class="modal-header">
+                        <h3>{{modal[0].title}}</h3>
+                    </div>
+                    <div class="modal-body">
+                        <ul>
+                            <li ng-repeat="item in items">
+                                <a href="#" ng-click="$event.preventDefault(); selected.item = item">{{ item }}</a>
+                            </li>
+
+                          
+                        </ul>
+                        <a href="{{modal[0].source_url}}">Link</a>
+                    </div>
+                    <div class="modal-footer">
+                        
+                        <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+                        <button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
+                    </div>
                 </div>
-                <div class="modal-body">
-                    <ul>
-                        <li ng-repeat="item in items">
-                            <a href="#" ng-click="$event.preventDefault(); selected.item = item">{{ item }}</a>
-                        </li>
-                    </ul>
-                <p ng-repeat="y in list">{{y}}<p>
-                </div>
-                <div class="modal-footer">
-                    
-                    <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
-                    <button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
-                </div>
-        </script>
-         <button ng-repeat="x in list" type="button" class="btn btn-default" ng-click="open('box', x)">Open</button>
-       
+            </script>
+             <img src="{{y.image_url}}" ng-click="open('box', y)">
+       </div>
         
     </div>
 </html>
