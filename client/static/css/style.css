@@ -1,0 +1,30 @@
+h1{
+	text-align: center;
+}
+nav{
+	position: fixed;
+}
+img{
+	padding:5px;
+}
+
+.search{
+	text-align: center;
+}
+body{
+	padding:0px;
+	background-size: 100%; 
+	background-repeat: no-repeat;
+	background-position: center center;
+	/*background-image: url("https://wallpaperscraft.com/image/masterchef_reality_show_food_cooking_show_98875_3840x2160.jpg");*/
+	background-attachment: fixed;
+}
+.modal-header{
+	color:black;
+}
+
+.container{
+	padding-top: 80px;
+	padding-left: 0px;
+	padding-right: 0px;
+}

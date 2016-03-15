@@ -1,14 +1,40 @@
 <html ng-app="Myapp">
 	<head>
 		<title>Grub Flix</title>
-
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/css/materialize.min.css">
   		<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.js"></script>
     	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular-animate.js"></script>
     	<script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-1.2.4.js"></script>
-		<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.5/angular.min.js"></script>
   		<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.5/angular-route.min.js"></script>
-  		
+  		<script src="./bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+  		<link rel="stylesheet" href="./bower_components/angular-bootstrap/ui-bootstrap-csp.css">
+  		<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous"> -->
+  		<link rel="stylesheet" href="./style.css" />
+
+	    <script type="text/ng-template" id="modal.html">
+	        <div ng-repeat="x in modal">
+	            <div class="modal-header">
+	                <h3>{{modal[0].title}}</h3>
+	            </div>
+	            <div class="modal-body">
+	            	<img src="{{modal[0].image_url}}" height="250px" width="350px">
+	                <a href="{{modal[0].source_url}}">Link</a>
+	                
+	            </div>
+	         </div>
+				<ul>
+					<li ng-repeat="asdf in ingredients">test</li>
+				</ul>
+
+	            <div class="modal-footer">
+
+	                <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+	                <button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
+	            </div>
+	       
+	      
+    	</script>
+
   		<script>
   			var Myapp = angular.module('Myapp', ['ngRoute', 'ui.bootstrap','ngAnimate']);
 			
@@ -26,12 +52,14 @@
 			Myapp.factory('apifactory', function($http){
 				var functions = {};
 				var recipes = [];
+				var ingredients = [];
 				
 				functions.getapi = function(callback){
 					// console.log("test");
 					$http.get('/getapi').success(function(response){
 						var result = {};
 						recipes.push(JSON.parse(response.body));
+						// console.log(JSON.parse(response.body));
 						
 
 						callback(recipes);
@@ -40,6 +68,18 @@
 				functions.callback = function(callback){
 					callback(recipes);
 				}
+
+				functions.get_ing = function(ing, callback){
+					$http.get("/ing/"+ing).success(function(result){
+					
+						
+						var test = JSON.parse(result);
+						//console.log(test.recipe.ingredients);
+						ingredients = test.recipe.ingredients;
+						callback = ingredients;
+					})
+				}
+			
 				return functions;
 			})
 		
@@ -48,6 +88,7 @@
 				$scope.items = ['item1', 'item2', 'item3'];
 				$scope.animationsEnabled = true;
 				$scope.modal = [];
+				$scope.ingredients = [];
 				
 
 				apifactory.getapi(function(data){
@@ -61,14 +102,16 @@
 				
 				$scope.open = function (size, num) {
 					$scope.modal = [];
-				apifactory.callback(function(data){
+				
+					apifactory.callback(function(data){
+						$scope.modal.push(num);
+					});
+
+					apifactory.get_ing(num.recipe_id, function(data){
+						$scope.ingredients = data;
+					});
 					
-					console.log(num);
-					$scope.modal.push(num);
-
-
-
-				})
+				
 
 
 				var modalInstance = $uibModal.open({
@@ -83,16 +126,22 @@
 				    },
 				    modal: function(){
 				    	return $scope.modal;
-				    }
+				    },
+				    ingredients: function(){
+				    	return $scope.ingredients;
+				    },
+				   
 				  }
 				});
 
 
 				modalInstance.result.then(function (selectedItem) {
-				  $scope.selected = selectedItem;
+
+					$scope.selected = selectedItem;
+
 				}, function () {
-				  $log.info('Modal dismissed at: ' + new Date());
-				});
+				  		$log.info('Modal dismissed at: ' + new Date());
+					});
 				};
 
 				// $scope.toggleAnimation = function () {
@@ -101,9 +150,11 @@
 
 			});
 
-			Myapp.controller('ModalInstanceCtrl', function ($scope, $uibModalInstance, items, modal) {
+			Myapp.controller('ModalInstanceCtrl', function ($scope, $uibModalInstance, items, modal, ingredients) {
 			$scope.modal = modal;
 			$scope.items = items;
+			$scope.ingredients = ingredients;
+			
 
 			$scope.selected = {
 			item: $scope.items[0]

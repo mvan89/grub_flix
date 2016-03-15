@@ -3,48 +3,29 @@
 		<title>Grub Flix</title>  		
 	</head>
 	<body>
-		<nav>
-		    <div class="nav-wrapper #0288d1 light-blue darken-2 fixed">
-		    	<a style="margin-left: 45%" class="brand-logo">Grub Flix</a>
-		      	<form>
-			        <div class="input-field">
-			          <input id="search" type="search" required>
-			          <label for="search"><i class="material-icons">Search</i></label>
-			          <i class="material-icons">close</i>
-			        </div>
-		     	</form>
-		    </div>
-		</nav>
-        
-	</body>
+        <nav>
+            <div class="nav-wrapper #0288d1 light-blue darken-2 fixed">
+                <a style="margin-left: 45%" class="brand-logo">Grub Flix</a>
+                <form>
+                    <div class="input-field">
+                      <input id="search" type="search" required>
+                      <label for="search"><i class="material-icons">Search</i></label>
+                    </div> 
+                </form>
+            </div>
+        </nav>
+            <div class="container">
 
-	<div  ng-controller="modalcontrol">
-        <div ng-repeat="y in list">
-            <p>{{x.title}}</p>
-            <script type="text/ng-template" id="modal.html">
-                <div ng-repeat="x in modal">
-                    <div class="modal-header">
-                        <h3>{{modal[0].title}}</h3>
-                    </div>
-                    <div class="modal-body">
-                        <ul>
-                            <li ng-repeat="item in items">
-                                <a href="#" ng-click="$event.preventDefault(); selected.item = item">{{ item }}</a>
-                            </li>
 
-                          
-                        </ul>
-                        <a href="{{modal[0].source_url}}">Link</a>
+                	<div  ng-controller="modalcontrol">
+                   
+                            
+                             <img ng-repeat="y in list" src="{{y.image_url}}" ng-click="open('large', y)" height="250px" width="230px">
+                      
                     </div>
-                    <div class="modal-footer">
-                        
-                        <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
-                        <button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
-                    </div>
-                </div>
-            </script>
-             <img src="{{y.image_url}}" ng-click="open('box', y)">
-       </div>
-        
-    </div>
+                <footer>
+                    <button type="submit" class="btn btn-default">Don't like what you see! Click here!</button>
+                </footer>
+            </div>
+    </body>
 </html>

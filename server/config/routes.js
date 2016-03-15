@@ -5,7 +5,9 @@ module.exports = function(app){
 		
 		doge.getapi(req,res);
 	})
-
+	app.get('/ing/:id', function(req,res){
+		doge.get_ing(req,res);
+	})
 
 
 
