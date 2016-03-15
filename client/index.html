@@ -2,14 +2,16 @@
 	<head>
 		<title>Grub Flix</title>
 
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/js/materialize.min.js"></script>
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/css/materialize.min.css">
-  		
+  		<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.js"></script>
+    	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular-animate.js"></script>
+    	<script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-1.2.4.js"></script>
 		<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.5/angular.min.js"></script>
   		<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.5/angular-route.min.js"></script>
   		
   		<script>
-  			var Myapp = angular.module('Myapp', ['ngRoute']);
+  			var Myapp = angular.module('Myapp', ['ngRoute', 'ui.bootstrap','ngAnimate']);
+			
 			Myapp.config(function($routeProvider, $locationProvider){
 				$routeProvider
 
@@ -21,34 +23,95 @@
 				});	
 				
 			})
-			Myapp.config(['$httpProvider', function($httpProvider) {
-        		$httpProvider.defaults.withCredentials = true;
-        		delete $httpProvider.defaults.headers.common['X-Requested-With'];
-   			 }
-			]);
-			Myapp.controller('maincontroller', function($scope, apifactory ){
-				$scope.list = [];
-
-
-				apifactory.getapi(function(data){$scope.list = data});
-
-
-
-			})
-
-
 			Myapp.factory('apifactory', function($http){
 				var functions = {};
+				var recipes = [];
 				
 				functions.getapi = function(callback){
-					console.log("test");
+					// console.log("test");
 					$http.get('/getapi').success(function(response){
-						console.log(response);
+						var result = {};
+						recipes.push(JSON.parse(response.body));
+						
+
+						callback(recipes);
 					})
+				}
+				functions.callback = function(callback){
+					callback(recipes);
 				}
 				return functions;
 			})
 		
+			Myapp.controller('modalcontrol', function ($scope, $uibModal, $log, apifactory) {
+				$scope.list = [];
+				$scope.items = ['item1', 'item2', 'item3'];
+				$scope.animationsEnabled = true;
+				$scope.modal = [];
+
+				apifactory.getapi(function(data){
+					$scope.list = data[0].recipes;
+					console.log($scope.list);
+					//console.log($scope.list[0].recipes.length);
+				
+				});
+				
+				
+				
+				$scope.open = function (size, num) {
+
+				apifactory.callback(function(data){
+					// console.log($scope.list);
+					console.log(num);
+
+
+				})
+
+
+				var modalInstance = $uibModal.open({
+				  animation: $scope.animationsEnabled,
+				  templateUrl: 'modal.html',
+				  controller: 'ModalInstanceCtrl',
+				  size: size,
+				  resolve: {
+				    items: function () {
+				      return $scope.items;
+				      return $scope.list;
+				    }
+				  }
+				});
+
+
+				modalInstance.result.then(function (selectedItem) {
+				  $scope.selected = selectedItem;
+				}, function () {
+				  $log.info('Modal dismissed at: ' + new Date());
+				});
+				};
+
+				// $scope.toggleAnimation = function () {
+				// $scope.animationsEnabled = !$scope.animationsEnabled;
+				// };
+
+			});
+
+			Myapp.controller('ModalInstanceCtrl', function ($scope, $uibModalInstance, items) {
+	
+			$scope.items = items;
+			$scope.selected = {
+			item: $scope.items[0]
+			};
+
+			$scope.ok = function () {
+				$uibModalInstance.close($scope.selected.item);
+			};
+
+			$scope.cancel = function () {
+				$uibModalInstance.dismiss('cancel');
+			};
+			});
+
+
 		</script>
 	</head>
 	<body>

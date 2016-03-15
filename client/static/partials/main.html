@@ -14,9 +14,31 @@
 			        </div>
 		     	</form>
 		    </div>
-		    <div ng-controller="maincontroller">
-		    </div>
 		</nav>
         
 	</body>
+
+	<div  ng-controller="modalcontrol">
+        <script type="text/ng-template" id="modal.html">
+                <div class="modal-header">
+                    <h3>Title</h3>
+                </div>
+                <div class="modal-body">
+                    <ul>
+                        <li ng-repeat="item in items">
+                            <a href="#" ng-click="$event.preventDefault(); selected.item = item">{{ item }}</a>
+                        </li>
+                    </ul>
+                <p ng-repeat="y in list">{{y}}<p>
+                </div>
+                <div class="modal-footer">
+                    
+                    <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+                    <button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
+                </div>
+        </script>
+         <button ng-repeat="x in list" type="button" class="btn btn-default" ng-click="open('box', x)">Open</button>
+       
+        
+    </div>
 </html>
