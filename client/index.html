@@ -21,17 +21,18 @@
         <script type="text/ng-template" id="modal.html">
             <div ng-repeat="x in modal">
                 <div class="modal-header">
-                    <h3>{{modal[0].title}}</h3>
+                    <h3 style="text-align: center;">{{modal[0].title}}</h3>
                 </div>
                 <div class="modal-body">
-                    <img src="{{modal[0].image_url}}" height="250px" width="350px"><br>
-                    <a href="{{modal[0].source_url}}">More Details</a> 
+                    <img style=" display: inline-block" src="{{modal[0].image_url}}" height="250px" width="250px">
+                    <ul style="vertical-align: top;display: inline-block; margin-left: 20px; width: 300px">
+                        <li style="font-weight: bold;">Ingredients:</li>
+                        <li style="margin-left: 20px; list-style: circle;" ng-repeat="x in ingredients track by $index">{{x}}</li>
+                    </ul>
                 </div>
+                <a href="{{modal[0].source_url}}">More Details</a> 
              </div>
-                <ul>
-                    <li>Ingredients:</li>
-                    <li ng-repeat="x in ingredients track by $index">{{x}}</li>
-                </ul>
+                
                 
                 <div class="modal-footer">
                     <button class="btn btn-warning #f4511e deep-orange darken-1" type="button" ng-click="cancel()">Close</button>
@@ -41,17 +42,18 @@
         <script type="text/ng-template" id="modal1.html">
         	<div ng-repeat="x in random">
         		<div class="modal-header">
-                    <h3>{{random.recipe.title}}</h3>
+                    <h3 style="text-align: center;" >{{random.recipe.title}}</h3>
                 </div>
         		 <div class="modal-body">
-        			<img src="{{random.recipe.image_url}}" height="250" width="350"><br>
-        			<a href="{{random.recipe.source_url}}">More Details</a>
-        			<ul>
-                        <li>Ingredients:</li>
-        				<li ng-repeat="x in random.recipe.ingredients track by $index">{{x}}</li>
+        			<img style=" display: inline-block" src="{{random.recipe.image_url}}" height="250" width="250">
+        		
+        			<ul style="vertical-align: top;display: inline-block; margin-left: 20px; width: 300px">
+                        <li style="font-weight: bold;">Ingredients:</li>
+        				<li  style="margin-left: 20px; list-style: circle;"ng-repeat="x in random.recipe.ingredients track by $index">{{x}}</li>
         			</ul>
 
         		</div>
+                    <a href="{{random.recipe.source_url}}">More Details</a>
         	</div>
         	<div class="modal-footer">
                 <button class="btn btn-warning #f4511e deep-orange darken-1" type="button" ng-click="cancel()">Close</button>        
