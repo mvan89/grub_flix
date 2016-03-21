@@ -4,29 +4,33 @@
 	</head>
 	<body>
         <div ng-controller="modalcontrol">
-        <nav>
-            <div class="nav-wrapper #0288d1 light-blue darken-2 fixed">
-                <a style="margin-left: 40%" class="brand-logo">Try Grub Flix!</a>
-                <form ng-submit="form()">
-                    <div class="input-field">
-                      <input  style="padding-left: 150px" id="search" type="search" required ng-model="box.search">
-                      <label for="search"><i class="material-icons">Search</i></label>
-                                            
-                    </div> 
-                </form>
-            </div>
-        </nav>
+            <nav>
+                <div class="nav-wrapper #0288d1 light-blue darken-2 fixed">
+                    <a style="margin-left: 44%" class="brand-logo">Grub Flix!</a>
+                    <form ng-submit="form()">
+                        <div class="input-field">
+                          <input  style="padding-left: 150px" id="search" type="search" required ng-model="box.search">
+                          <label for="search"><i class="material-icons">Search</i></label>
+                                                
+                        </div> 
+                    </form>
+                </div>
+            </nav>
+
             <div class="container">
 
-
-                	
-                            
-                             <img ng-repeat="y in list" src="{{y.image_url}}" ng-click="open('large', y)" height="250px" width="230px">
-                      
-                    </div>
+                <button id='button' type="submit" class="btn btn-default #f4511e deep-orange darken-1" ng-click="randombutton('box')">Can't Decide ! Click here!</button>
+                 <div ng-show="show" class="progress #f4511e deep-orange darken-1">
+                    <div class="indeterminate #ff9e80 deep-orange accent-1"></div>
+                </div>
+                <br>
+                <div class="frame" ng-repeat="y in list">
+                    <img class="pic" src="{{y.image_url}}" ng-click="open('large', y)">    
+                </div>     
                 <footer>
-                    <button type="submit" class="btn btn-default" ng-click="random('box')">Don't like what you see! Click here!</button>
+                    
                 </footer>
+            </div>
         </div>
     </body>
 </html>

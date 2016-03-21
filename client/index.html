@@ -9,7 +9,15 @@
         <script src="./bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
         <link rel="stylesheet" href="./bower_components/angular-bootstrap/ui-bootstrap-csp.css">
         <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous"> -->
-        <link rel="stylesheet" href="./style.css" />
+        <link rel="stylesheet" href="style.css">
+       
+        <script src="./static/javascripts/app.js"></script>
+        <script src="./static/javascripts/factories/apiFactory.js"></script>
+        <script src="./static/javascripts/controllers/randomController.js"></script>
+        <script src="./static/javascripts/controllers/modalController.js"></script>
+        <script src="./static/javascripts/controllers/modalinstanceController.js"></script>
+
+
         <script type="text/ng-template" id="modal.html">
             <div ng-repeat="x in modal">
                 <div class="modal-header">
@@ -17,219 +25,42 @@
                 </div>
                 <div class="modal-body">
                     <img src="{{modal[0].image_url}}" height="250px" width="350px"><br>
-                    <a href="{{modal[0].source_url}}">Cooking Instructions</a> 
+                    <a href="{{modal[0].source_url}}">More Details</a> 
                 </div>
              </div>
                 <ul>
+                    <li>Ingredients:</li>
                     <li ng-repeat="x in ingredients track by $index">{{x}}</li>
                 </ul>
                 
                 <div class="modal-footer">
-                    <button class="btn btn-warning" type="button" ng-click="cancel()">Close</button>
-                </div>
-           	
-          		
+                    <button class="btn btn-warning #f4511e deep-orange darken-1" type="button" ng-click="cancel()">Close</button>
+                </div>	
         </script>
-         <script type="text/ng-template" id="modal1.html">
+
+        <script type="text/ng-template" id="modal1.html">
         	<div ng-repeat="x in random">
         		<div class="modal-header">
                     <h3>{{random.recipe.title}}</h3>
                 </div>
         		 <div class="modal-body">
         			<img src="{{random.recipe.image_url}}" height="250" width="350"><br>
-        			<a href="{{random.recipe.source_url}}">Cooking Instructions</a>
+        			<a href="{{random.recipe.source_url}}">More Details</a>
         			<ul>
-        				<li ng-repeat="x in random.recipe.ingredients">{{x}}</li>
+                        <li>Ingredients:</li>
+        				<li ng-repeat="x in random.recipe.ingredients track by $index">{{x}}</li>
         			</ul>
 
         		</div>
         	</div>
         	<div class="modal-footer">
-                <button class="btn btn-warning" type="button" ng-click="cancel()">Close</button>        
+                <button class="btn btn-warning #f4511e deep-orange darken-1" type="button" ng-click="cancel()">Close</button>        
             </div>
         </script>
-      
-        <script>
-            var Myapp = angular.module('Myapp', ['ngRoute', 'ui.bootstrap','ngAnimate']);
-            
-            Myapp.config(function($routeProvider, $locationProvider){
-                $routeProvider
-                .when('/' , {
-                    templateUrl: 'static/partials/main.html'
-                })
-                .otherwise({
-                    redirectTo: '/'
-                }); 
-                
-            })
-            Myapp.factory('apifactory', function($http){
-                var functions = {};
-                var recipes = [];
-                var ingredients = [];
-                var random = [];
-                
-                
-                functions.getapi = function(callback){
-                    // console.log("test");
-                    $http.get('/getapi').success(function(response){
-                        
-                        recipes.push(JSON.parse(response.body));
-                        // console.log(JSON.parse(response.body));
-                        
-                        callback(recipes);
-                    })
-                }
-                functions.callback = function(callback){
-                    callback(recipes);
-                }
-                functions.get_ing = function(ing, callback){
-                    $http.get("/ing/"+ing).success(function(result){  
-                        var test = JSON.parse(result);
-                        //console.log(test.recipe.ingredients);
-                        ingredients = test.recipe.ingredients;
-                        callback(ingredients);
-                    })
-                },
-                functions.search = function(data, callback){
-                	
-                	$http.get('/search/'+data.search).success(function(response){
-                		var test= JSON.parse(response.body);
-
-                		if (test.count == 0){
-                			
-                			alert("No Recipes Found!");
-                		}
-                		else{
-	                		recipes = [];
-	                		recipes.push(JSON.parse(response.body));
-	                		callback(recipes);
-	                	}
-                	})
-                },
-                functions.random = function(callback){
-                	$http.get('/random').success(function(response){
-                		
-                		random = JSON.parse(response);
-                		callback(random);
-                		
-                	})
-                }
-
-            
-                return functions;
-            })
-        
-            Myapp.controller('modalcontrol', function ($scope, $uibModal, $log, apifactory) {
-                $scope.list = [];
-                $scope.items = ['item1', 'item2', 'item3'];
-                $scope.animationsEnabled = true;
-                $scope.modal = [];
-                $scope.ingredients = [];
-                $scope.errors = [];
-                $scope.random = [];
-
-                if ($scope.list = []){
-	                apifactory.getapi(function(data){
-	                    $scope.list = data[0].recipes;
-	                    console.log($scope.list);
-	                    //console.log($scope.list[0].recipes.length);
-	                
-	                });
-	            }
-               
-                
-                $scope.form = function (){
-                	
-                	apifactory.search($scope.box, function(data){
-                		
-                		$scope.list = data[0].recipes; 
-                		console.log(data[0].recipes);
-
-
-                	});
-                	
-                }
-
-                 $scope.random = function(size){
-                	apifactory.random(function(data){
-                		$scope.random = data;
-
-                		var modalInstance = $uibModal.open({
-                        animation: $scope.animationsEnabled,
-                        templateUrl: 'modal1.html',
-                        controller: 'randomCtrl',
-                        size: size,
-                        resolve: {
-                      
-                        random: function(){
-                            return $scope.random;
-                        },
-                        }
-                    });
-                	});
-                	
-                }
-                $scope.open = function (size, num) {
-                    $scope.modal = [];
-                    $scope.ingredients = [];
-                    apifactory.callback(function(data){
-                        $scope.modal.push(num);
-                    });
-                    apifactory.get_ing(num.recipe_id, function(data){
-                        $scope.ingredients = data;
-                        console.log($scope.ingredients);
-                    var modalInstance = $uibModal.open({
-                        animation: $scope.animationsEnabled,
-                        templateUrl: 'modal.html',
-                        controller: 'ModalInstanceCtrl',
-                        size: size,
-                        resolve: {
-                        items: function () {
-                          return $scope.items;
-                         
-                        },
-                        modal: function(){
-                            return $scope.modal;
-                        },
-                        ingredients: function(){
-                            return $scope.ingredients;
-                        },
-                        }
-                    });
-                    });
-                };
-                // $scope.toggleAnimation = function () {
-                // $scope.animationsEnabled = !$scope.animationsEnabled;
-                // };
-            });
-            Myapp.controller('ModalInstanceCtrl', function ($scope, $uibModalInstance, items, modal, ingredients) {
-	            $scope.modal = modal;
-	            $scope.items = items;
-	            $scope.ingredients = ingredients;
-	           
-	            
-	            $scope.selected = {
-		            item: $scope.items[0]
-		            };
-		            $scope.ok = function () {
-		                $uibModalInstance.close($scope.selected.item);
-		            };
-		            $scope.cancel = function () {
-		                $uibModalInstance.dismiss('cancel');
-		            };
-	            });
-	            Myapp.controller("randomCtrl", function ($scope, $uibModalInstance, random){
-	            	$scope.random = random;
-	            	
-	     
-	            $scope.cancel = function () {
-	                $uibModalInstance.dismiss('cancel');
-	            };
-            })
-        </script>
+       
     </head>
-    <body>
-        <div ng-view="">
-        </div>
-    </body>
+        <body>
+            <div ng-view="">
+            </div>
+        </body>
 </html>

@@ -6,7 +6,8 @@ module.exports = (function() {
 		getapi: function(req,res){
 			// console.log("get here");
 			var page = Math.floor(Math.random()*3100);
-			request("http://food2fork.com/api/search?key=20a0c3d035c0f8c722063145059cc1b7&page="+ page, function(err, response, body){
+			request("http://food2fork.com/api/search?key=ebc794811e4a59fb16d79a31a6576cac", function(err, response, body){
+			// request("http://food2fork.com/api/search?key=20a0c3d035c0f8c722063145059cc1b7&page="+ page, function(err, response, body){
 				
 				res.json(response);
 			})
@@ -37,4 +38,4 @@ module.exports = (function() {
 			})
 		}
 	}
-})();
+}) ();

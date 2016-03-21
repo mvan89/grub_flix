@@ -4,21 +4,12 @@ h1{
 nav{
 	position: fixed;
 }
-img{
-	padding:5px;
-}
+
 
 .search{
 	text-align: center;
 }
-body{
-	padding:0px;
-	background-size: 100%; 
-	background-repeat: no-repeat;
-	background-position: center center;
-	/*background-image: url("https://wallpaperscraft.com/image/masterchef_reality_show_food_cooking_show_98875_3840x2160.jpg");*/
-	background-attachment: fixed;
-}
+
 .modal-header{
 	color:black;
 }
@@ -27,4 +18,43 @@ body{
 	padding-top: 80px;
 	padding-left: 0px;
 	padding-right: 0px;
+	padding-bottom: 10px;
+	margin-left:4%;
+	width: 100%;
+}
+.frame{
+	display: inline-block;
+	/*border: solid;
+	border-color: white;
+*/	height: 230px;
+  width: 230px;
+  margin-left: 5px;
+  margin-top: 5px;
+  overflow: hidden;
+  padding-left: 5px;
+  padding-top: 5px;
+}
+.pic{
+	margin: 0px;
+	width: 250px;
+	height: 250px;
+	
+	-webkit-transition: all 1s ease;
+     -moz-transition: all 1s ease;
+       -o-transition: all 1s ease;
+      -ms-transition: all 1s ease;
+          transition: all 1s ease;
+}
+
+.pic:hover{
+	margin:0px;
+	padding: 0px;
+  width: 320px;
+  height: 300px;
+}
+#button{
+	margin-left: 34%;
+}
+.progress{
+	width: 90%;
 }
