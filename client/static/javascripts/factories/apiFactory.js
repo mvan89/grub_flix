@@ -18,6 +18,7 @@ Myapp.factory('apifactory', function($http){
     functions.callback = function(callback){
         callback(recipes);
     }
+    
     functions.get_ing = function(ing, callback){
         $http.get("/ing/"+ing).success(function(result){  
             var test = JSON.parse(result);
